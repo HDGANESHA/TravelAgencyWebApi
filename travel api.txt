@@ -1,0 +1,123 @@
+TRAVEL LIST WEB API
+
+
+
+DB DESIGN
+
+create database finalevaluation;
+go
+use finalevaluation;
+go
+
+create table destination(destination_id int not null primary key,destination_name varchar(20))
+
+create table covering(place_id int not null ,place_name varchar(20),destination_id int foreign key references destination(destination_id),primary key(place_id,destination_id));
+
+create table plans(plan_id int not null primary key,plan_name varchar(20),destination_id int not null foreign key references destination(destination_id))
+
+
+
+
+insert into destination(destination_id,destination_name)
+values
+(20,'Goa'),
+(21,'Delhi'),
+(22,'jammu');
+
+
+
+
+insert into covering(place_id,place_name,destination_id)
+values
+(101,'plc1',20),
+(102,'plc2',20),
+(103,'plc3',21),
+(104,'plc4',21),
+(105,'plc5',22),
+(106,'plc6',22),
+(107,'plc7',22);
+
+ 
+
+ insert into plans(plan_id,plan_name,destination_id)
+ values(1234,'Goa trip',20),
+ (1235,'Delhi trip',21),
+ (1236,'Jammu plan',22);
+
+
+create table Planperiod(
+PeriodID int not null,
+noofdays tinyint not null,
+plan_id int foreign key references plans(plan_id),
+primary key(PeriodID,plan_id));
+
+ insert into Planperiod(PeriodID,noofdays,plan_id)
+ values(2222,1,1235),
+ (2223,12,1235),
+ (2224,2,1236),
+ (2225,10,1236),
+ (2224,5,1234),
+ (2225,6,1234);
+
+
+
+ create table Transpordmode(
+TID int not null,
+Tname char(20),
+plan_id int foreign key references plans(plan_id),
+primary key(TID,plan_id));
+
+insert into Transpordmode(TID,Tname,plan_id)
+values(3333,'Bus',1234),
+ (3334,'Plain',1234),
+ (3335,'Train',1234),
+ (3336,'Bus',1235),
+ (3337,'Plain',1235),
+ (3338,'Train',1236);
+
+
+
+create table Planprice(
+PPID int not null,
+amount int not null,
+PeriodID int not null,
+TID int not null,
+plan_id int not null foreign key references plans(plan_id),
+foreign key (PeriodID,plan_id) references Planperiod(PeriodID,plan_id),
+foreign key (TID,plan_id) references Transpordmode(TID,plan_id),
+primary key(PPID,PeriodID,TID,plan_id));
+
+
+insert into Planprice(PPID,amount,PeriodID,TID,plan_id)
+values(999,12000,2225,3334,1234),
+ (999,18000,2225,3335,1234)
+
+update Transpordmode set Tname = 'car'
+where TID =3337;
+
+
+SCREENSHOTS OF RESTAPI
+1)
+ 
+
+2)
+ 
+
+3)
+ 
+
+4)
+ 
+ 
+
+5)
+ 
+
+6)
+ 
+7)
+ 
+8)
+ 
+
+
